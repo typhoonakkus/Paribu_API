@@ -2,7 +2,7 @@ import reporter from 'cucumber-html-reporter';
 
 const options = {
   theme: 'bootstrap',
-  jsonFile: 'reports/cucumber_report.json',
+  jsonFile: 'reports/cucumber-report.json',
   output: 'reports/report.html',
   reportSuiteAsScenarios: true,
   launchReport: false,

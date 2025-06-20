@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "dotenv -e .env.test -- cucumber-js --format json:reports/cucumber-report.json",
+    "test:allure": "npx dotenv-cli -e .env.test -- cucumber-js --require-module ts-node/register --format ./reporting/allure-report.js",
     "test:dev": "dotenv -e .env.dev -- cucumber-js",
     "test:prod": "dotenv -e .env.prod -- cucumber-js",
     "report": "ts-node scripts/generateReport.ts",

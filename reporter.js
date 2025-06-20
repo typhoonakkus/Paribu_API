@@ -1,4 +1,3 @@
-// reporter.js
 const { CucumberJSAllureFormatter } = require("allure-cucumberjs");
 const { AllureRuntime } = require("allure-js-commons");
 

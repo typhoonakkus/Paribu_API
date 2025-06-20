@@ -25,11 +25,27 @@ Given('the user credentials are prepared from the user list', async function (th
 
 When('the user logs in with the prepared credentials', async function (this: CustomWorld) {
   Logger.info(`Attempting login with username: ${this.username}`);
+
+  
+  this.attach(
+    `POST /auth/login\nRequest Body:\n${JSON.stringify(
+      { username: this.username, password: '***' },
+      null,
+      2
+    )}`
+  );
+
   const loginResponse = await authService.login(this.username!, this.password!);
   const loginBody = await loginResponse.json();
+
   Logger.info(`Login response status: ${loginResponse.status()}`);
 
-  this.token = loginBody.token || loginBody.accessToken; // API'ye göre ayarla
+  
+  this.attach(
+    `Response Status: ${loginResponse.status()}\nResponse Body:\n${JSON.stringify(loginBody, null, 2)}`
+  );
+
+  this.token = loginBody.token || loginBody.accessToken; 
   TokenStore.setToken(this.token!);
 
   this.response = loginResponse;
@@ -47,14 +63,28 @@ Then('the access token should be saved', function (this: CustomWorld) {
   expect(typeof this.token).toBe('string');
 });
 
-// Login with incorrect password
+
 When('the user logs in with username {string} and password {string}', async function (
   this: CustomWorld,
   username: string,
   password: string
 ) {
+  
+  this.attach(
+    `POST /auth/login\nRequest Body:\n${JSON.stringify(
+      { username, password: '***' },
+      null,
+      2
+    )}`
+  );
+
   const loginResponse = await authService.login(username, password);
   const loginBody = await loginResponse.json();
+
+  
+  this.attach(
+    `Response Status: ${loginResponse.status()}\nResponse Body:\n${JSON.stringify(loginBody, null, 2)}`
+  );
 
   this.token = loginBody.token || loginBody.accessToken;
   this.response = loginResponse;

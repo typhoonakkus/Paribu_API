@@ -1,37 +1,29 @@
-export const ProductService = {
-  getTokenFromDefaultUser: async () => {
-    const res = await fetch('https://dummyjson.com/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: 'kminchelle', password: '0lelplR' }),
-    });
-    const body = await res.json();
-    return { token: body.token };
-  },
+import { APIRequestContext } from '@playwright/test';
 
-  getProducts: async (token: string, limit: number = 10) => {
-    return await fetch(`https://dummyjson.com/auth/products?limit=${limit}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  },
-
-  updateProduct: async (token: string, productId: number, payload: any) => {
-    return await fetch(`https://dummyjson.com/auth/products/${productId}`, {
-      method: 'PUT',
+export class ProductService {
+  static async getProducts(requestContext: APIRequestContext, token: string, limit: number) {
+    return requestContext.get(`/products?limit=${limit}`, {
       headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  static async updateProduct(requestContext: APIRequestContext, token: string, productId: number, data: any) {
+    return requestContext.put(`/products/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(payload),
+      data,
     });
-  },
+  }
 
-  deleteProduct: async (token: string, productId: number) => {
-    return await fetch(`https://dummyjson.com/auth/products/${productId}`, {
-      method: 'DELETE',
+  static async deleteProduct(requestContext: APIRequestContext, token: string, productId: number) {
+    return requestContext.delete(`/products/${productId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  },
-};
+  }
+}

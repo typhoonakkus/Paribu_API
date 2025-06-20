@@ -6,13 +6,15 @@ This project is an API test automation case study prepared for Paribu. It uses P
 
 Playwright (for API testing)
 
-Cucumber (for BDD-style Gherkin scenarios)
+Cucumber.js (for BDD test scenarios using Gherkin)
 
 TypeScript
 
 Node.js
 
 ts-node (to run TypeScript files directly)
+
+cucumber-html-reporter (for HTML reporting)
 
 🔧 Project Structure
 
@@ -49,25 +51,69 @@ Install dependencies:
 
 npm install
 
-💡 Commands
+💡 Environment Management
 
-Run Tests
+This project uses dotenv and dotenv-cli to manage environment variables for different stages.
+
+Environment files
+.env.dev (for development)
+
+.env.test (for test environment)
+
+.env.prod (for production)
+
+Sample .env.test file
+env
+Copy
+Edit
+BASE_URL=https://dummyjson.com
+LOGIN_USERNAME=kminchelle
+LOGIN_PASSWORD=0lelplR
+How environment variables are loaded
+The custom CustomWorld class loads BASE_URL from environment variables to set the API base URL dynamically.
+
+Login credentials are also read from the .env files.
+
+💡 Available Commands
+
+💻 Running Tests
+Run all tests with environment variables from .env.test:
+
+npm run test:test
+This command internally uses dotenv-cli to load .env.test and runs Cucumber tests with Playwright.
+
+Run all tests (default):
 
 npm run test
+Run tests in parallel:
 
-This runs all scenarios written in Gherkin format and writes a JSON report to the reports/ folder.
+npm run test:parallel
+Run a specific feature file:
 
-or 
-
-run specific feature file with this command 
 npx cucumber-js features/login.feature
 
 
-Generate HTML Report
+📄 Generating Reports
+After running tests, a JSON report is created at reports/cucumber-report.json.
+
+Generate an HTML report with:
 
 npm run report
+This runs the scripts/generateReport.ts script, which converts the JSON report into reports/report.html.
 
-Runs the scripts/generateReport.ts file using ts-node to generate report.html.
+Open the HTML report:
+
+Open reports/report.html in a web browser to see detailed test results.
+
+🧾 Logging
+
+The project includes a lightweight logger utility in src/utils/logger.ts:
+
+Logger.info('Message');
+Logger.warn('Warning');
+Logger.error('Error');
+
+Each step logs meaningful information (e.g., token validation, product update status) with timestamps. These logs help trace test flows and debug when necessary. Log output is visible in the console during test execution.
 
 ✅ Sample Scenarios
 

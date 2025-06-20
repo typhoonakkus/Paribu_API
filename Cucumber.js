@@ -1,9 +1,9 @@
 module.exports = {
-  default: [
-    '--require-module ts-node/register',
-    '--require features/**/*.ts',
-    '--format json:reports/cucumber_report.json',  
-    '--publish-quiet',
-    '--format progress'
-  ].join(' ')
+  default: {
+    paths: ['features/**/*.feature'],
+    require: ['features/step_definitions/**/*.ts', 'features/support/**/*.ts'],
+    format: ['json:./reports/cucumber-report.json', 'progress'],
+    requireModule: ['ts-node/register'],
+    timeout: 60 * 1000,
+  },
 };
